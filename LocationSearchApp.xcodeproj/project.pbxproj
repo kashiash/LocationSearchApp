@@ -11,6 +11,8 @@
 		761085C82958556E0093D592 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761085C72958556E0093D592 /* ContentView.swift */; };
 		761085CA295855700093D592 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 761085C9295855700093D592 /* Assets.xcassets */; };
 		761085CE295855700093D592 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 761085CD295855700093D592 /* Preview Assets.xcassets */; };
+		761085D72958584C0093D592 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761085D62958584C0093D592 /* SearchView.swift */; };
+		761085D929585C600093D592 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761085D829585C600093D592 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +22,8 @@
 		761085C9295855700093D592 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		761085CB295855700093D592 /* LocationSearchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LocationSearchApp.entitlements; sourceTree = "<group>"; };
 		761085CD295855700093D592 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		761085D62958584C0093D592 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		761085D829585C600093D592 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +40,8 @@
 		761085B92958556E0093D592 = {
 			isa = PBXGroup;
 			children = (
+				761085D5295856010093D592 /* ViewModel */,
+				761085D4295855F60093D592 /* View */,
 				761085C42958556E0093D592 /* LocationSearchApp */,
 				761085C32958556E0093D592 /* Products */,
 			);
@@ -67,6 +73,22 @@
 				761085CD295855700093D592 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		761085D4295855F60093D592 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				761085D62958584C0093D592 /* SearchView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		761085D5295856010093D592 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				761085D829585C600093D592 /* LocationManager.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,7 +161,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				761085D929585C600093D592 /* LocationManager.swift in Sources */,
 				761085C82958556E0093D592 /* ContentView.swift in Sources */,
+				761085D72958584C0093D592 /* SearchView.swift in Sources */,
 				761085C62958556E0093D592 /* LocationSearchAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,6 +293,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -307,6 +332,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
