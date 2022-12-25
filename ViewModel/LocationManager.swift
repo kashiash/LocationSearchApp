@@ -36,7 +36,15 @@ class LocationManager: NSObject, ObservableObject,MKMapViewDelegate,CLLocationMa
             })
     }
     func fetchPlaces(value: String){
-        print(value)
+        Task{
+            do{
+                let request = MKLocalSearch.Request()
+                request.naturalLanguageQuery = value.lowercased()
+                let response = try await MKLocalSearch(request: request).start()
+            } catch {
+                //HANDLE ERROR
+            }
+        }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
