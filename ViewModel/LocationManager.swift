@@ -14,10 +14,11 @@ import Combine
 class LocationManager: NSObject, ObservableObject,MKMapViewDelegate,CLLocationManagerDelegate{
     @Published var mapView: MKMapView = .init()
     @Published var manager: CLLocationManager = .init()
-    
+   
     //MARK: Search Bar text
     @Published var searchText: String = ""
     var cancellable: AnyCancellable?
+    @Published var fetchedPlaces: [CLPlacemark]?
     
     override init() {
         super.init()
@@ -41,6 +42,12 @@ class LocationManager: NSObject, ObservableObject,MKMapViewDelegate,CLLocationMa
                 let request = MKLocalSearch.Request()
                 request.naturalLanguageQuery = value.lowercased()
                 let response = try await MKLocalSearch(request: request).start()
+                
+                await MainActor.run(body: {
+                    self.fetchedPlaces = response.mapItems.compactMap({item -> CLPlacemark? in
+                        return item.placemark
+                    })
+                })
             } catch {
                 //HANDLE ERROR
             }

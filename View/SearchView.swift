@@ -36,6 +36,28 @@ struct SearchView: View {
             }
             .padding(.vertical,10)
             
+            if let places = locationManager.fetchedPlaces, !places.isEmpty {
+                List{
+                    ForEach(places, id: \.self) { place in
+                        HStack(spacing:15){
+                            Image(systemName: "mappin.circle.fill")
+                                .font(.title2)
+                                .foregroundColor(.gray)
+                        }
+                        VStack(alignment: .leading, spacing: 6){
+                            Text(place.name ?? "")
+                                .font(.title3.bold())
+                            
+                            Text(place.locality ?? "")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                }
+                .listStyle(.plain)
+            }
+            
+            
             //MARK: Current location button
             Button{
                 
