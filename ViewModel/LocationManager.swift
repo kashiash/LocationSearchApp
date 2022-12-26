@@ -20,6 +20,10 @@ class LocationManager: NSObject, ObservableObject,MKMapViewDelegate,CLLocationMa
     var cancellable: AnyCancellable?
     @Published var fetchedPlaces: [CLPlacemark]?
     
+    //MARK: User Location
+    
+    @Published var userLocation: CLLocation?
+    
     override init() {
         super.init()
         manager.delegate = self
@@ -33,7 +37,11 @@ class LocationManager: NSObject, ObservableObject,MKMapViewDelegate,CLLocationMa
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .removeDuplicates()
             .sink(receiveValue: { value in
-                self.fetchPlaces(value: value)
+                if value != ""{
+                    self.fetchPlaces(value: value)
+                } else {
+                    self.fetchedPlaces = nil
+                }
             })
     }
     func fetchPlaces(value: String){
@@ -59,7 +67,8 @@ class LocationManager: NSObject, ObservableObject,MKMapViewDelegate,CLLocationMa
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let _ = locations.last else { return }
+        guard let currentLocation = locations.last else { return }
+        self.userLocation = currentLocation
     }
     
     //Location Authorization
@@ -76,5 +85,20 @@ class LocationManager: NSObject, ObservableObject,MKMapViewDelegate,CLLocationMa
     
     func handleLocationError(){
         
+    }
+    
+    func addDraggablePin(coordinate: CLLocationCoordinate2D){
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = "Strange place"
+        mapView.addAnnotation(annotation)
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation:MKAnnotation) -> MKAnnotationView?{
+        let marker = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "DELIVERYPIN")
+        marker.isDraggable = true
+        marker.canShowCallout = false
+        return marker
     }
 }
