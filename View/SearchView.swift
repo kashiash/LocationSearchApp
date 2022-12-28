@@ -10,20 +10,20 @@ import MapKit
 
 struct SearchView: View {
     @StateObject var locationManager: LocationManager = .init()
-    // Navigation tag to push view to mapview
-    @State var navigationTag:String?
+    // MARK: Navigation Tag to Push View to MapView
+    @State var navigationTag: String?
     @State var presentNavigationView: Bool = false
     var body: some View {
         VStack{
-            HStack(spacing: 15) {
+            HStack(spacing: 15){
                 Button {
-                    
+                
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.title3)
                         .foregroundColor(.primary)
                 }
-                
+
                 Text("Search Location")
                     .font(.title3)
                     .fontWeight(.semibold)
@@ -44,7 +44,7 @@ struct SearchView: View {
             }
             .padding(.vertical,10)
             
-            if let places = locationManager.fetchedPlaces, !places.isEmpty {
+            if let places = locationManager.fetchedPlaces,!places.isEmpty{
                 List{
                     ForEach(places,id: \.self){place in
                         Button {
@@ -83,30 +83,33 @@ struct SearchView: View {
                 }
                 .listStyle(.plain)
             }
-            
-            //MARK: Current location button
-            Button{
-               
-                if let coordinate = locationManager.userLocation?.coordinate{
-                    locationManager.mapView.region = .init(center: coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-                    locationManager.addDraggablePin(coordinate: coordinate)
-                    locationManager.updatePlacemark(location: .init(latitude: coordinate.latitude, longitude: coordinate.longitude))
+            else{
+                // MARK: Live Location Button
+                Button {
+                    // MARK: Setting Map Region
+                    if let coordinate = locationManager.userLocation?.coordinate{
+                        locationManager.mapView.region = .init(center: coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+                        locationManager.addDraggablePin(coordinate: coordinate)
+                        locationManager.updatePlacemark(location: .init(latitude: coordinate.latitude, longitude: coordinate.longitude))
+                        
+                        // MARK: Navigating To MapView
+                        if #available(iOS 16, *){
+                            presentNavigationView.toggle()
+                        }else{
+                            navigationTag = "MAPVIEW"
+                        }
+                    }
+                } label: {
+                    Label {
+                        Text("Use Current Location")
+                            .font(.callout)
+                    } icon: {
+                        Image(systemName: "location.north.circle.fill")
+                    }
+                    .foregroundColor(.green)
                 }
-                if #available(iOS 16, *){
-                    presentNavigationView.toggle()
-                }else{
-                    navigationTag = "MAPVIEW"
-                }
-            } label: {
-                Label {
-                    Text("Use Current Location")
-                        .font(.callout)
-                } icon: {
-                    Image(systemName: "location.north.circle.fill")
-                }
-                .foregroundColor(.green)
+                .frame(maxWidth: .infinity,alignment: .leading)
             }
-            .frame(maxWidth: .infinity,alignment: .leading)
         }
         .padding()
         .frame(maxHeight: .infinity,alignment: .top)
@@ -137,6 +140,7 @@ struct SearchView_Previews: PreviewProvider {
     }
 }
 
+// MARK: MapView Live Selection
 struct MapViewSelection: View{
     @EnvironmentObject var locationManager: LocationManager
     @Environment(\.dismiss) var dismiss
@@ -156,18 +160,20 @@ struct MapViewSelection: View{
             }
             .padding()
             .frame(maxWidth: .infinity,maxHeight: .infinity,alignment: .topLeading)
+
             
-            //MARK: Displaying data
+            // MARK: Displaying Data
             if let place = locationManager.pickedPlaceMark{
-                VStack(spacing:15){
-                    Text("Confirm location")
+                VStack(spacing: 15){
+                    Text("Confirm Location")
                         .font(.title2.bold())
                     
-                    HStack(spacing:15){
+                    HStack(spacing: 15){
                         Image(systemName: "mappin.circle.fill")
                             .font(.title2)
                             .foregroundColor(.gray)
-                        VStack(alignment: .leading, spacing: 6){
+                        
+                        VStack(alignment: .leading, spacing: 6) {
                             Text(place.name ?? "")
                                 .font(.title3.bold())
                             
@@ -176,27 +182,27 @@ struct MapViewSelection: View{
                                 .foregroundColor(.gray)
                         }
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity,alignment: .leading)
                     .padding(.vertical,10)
                     
                     Button {
-                        
                     } label: {
-                        Text("Confirm location")
+                        Text("Confirm Location")
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical,12)
                             .background{
-                                RoundedRectangle(cornerRadius: 10,style: .continuous)
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
                                     .fill(.green)
                             }
-                            .overlay(alignment:.trailing){
+                            .overlay(alignment: .trailing) {
                                 Image(systemName: "arrow.right")
                                     .font(.title3.bold())
                                     .padding(.trailing)
                             }
                             .foregroundColor(.white)
                     }
+
                 }
                 .padding()
                 .background{
@@ -204,9 +210,8 @@ struct MapViewSelection: View{
                         .fill(scheme == .dark ? .black : .white)
                         .ignoresSafeArea()
                 }
-                .frame(height: .infinity, alignment: .bottom)
+                .frame(maxHeight: .infinity,alignment: .bottom)
             }
-            
         }
         .onDisappear {
             locationManager.pickedLocation = nil
@@ -222,7 +227,5 @@ struct MapViewHelper : UIViewRepresentable{
     func makeUIView(context: Context) -> MKMapView {
         return locationManager.mapView
     }
-    func updateUIView(_ uiView: MKMapView, context: Context) {
-        
-    }
+    func updateUIView(_ uiView: MKMapView, context: Context) {}
 }
