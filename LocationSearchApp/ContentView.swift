@@ -9,8 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        NavigationView{
-            SearchView()
+        if #available(iOS 16, *){
+            NavigationStack{
+                SearchView()
+                    .toolbar(.hidden, for: .navigationBar)
+            }
+        }else{
+            NavigationView{
+                SearchView()
+                    .navigationBarHidden(true)
+            }
         }
     }
 }
